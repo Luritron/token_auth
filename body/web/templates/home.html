@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="col-md-6 offset-md-3">
+        {% if user.is_authenticated %}
+
+        <br/>
+        <h1>Welcome, {{ user.username }}</h1>
+        <!-- Добавив JS код для виводу токену та валідності отриманих даних у консолі браузеру-->
+        <script>
+            const token1 = "{{ token|safe }}";
+            const taken2 = "{{ user_data|safe }}"
+
+            console.log('Token:', token1);
+            console.log('UserData:', taken2);
+        </script>
+
+        <p>Username: {{ user_data.username }}</p>
+        <p>Email: {{ user_data.email }}</p>
+        <p>Password: {{ user_data.password }}</p>
+        <br/>
+        <div class="btn-group">
+            <a href="{% url 'change_name' %}?token={{ token|safe }}" class="btn btn-primary">Change Name</a>
+            <a href="{% url 'change_email' %}?token={{ token|safe }}" class="btn btn-primary">Change Email</a>
+            <a href="{% url 'change_password' %}?token={{ token|safe }}" class="btn btn-primary">Change Password</a>
+            <a href="{% url 'delete_account' %}?token={{ token|safe }}" class="btn btn-danger">Delete Account</a>
+        </div>
+
+        {% else %}
+
+        <h1>Login</h1>
+        <br/>
+        <form method="POST" action="{% url 'home' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
+    {% endif %}
+
+{% endblock %}

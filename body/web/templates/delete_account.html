@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-md-6 offset-md-3">
+    {% if user.is_authenticated %}
+    <h1>Are you sure that you want to delete your account?</h1>
+    <br/>
+    <form method="POST" action="{% url 'delete_account' %}">
+        {% csrf_token %}
+        <input type="hidden" name="token" value="{{ request.GET.token }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    {% endif %}
+</div>
+
+{% endblock %}
